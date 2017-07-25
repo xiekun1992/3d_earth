@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script src="three.js"></script>
+	<script>
+		var scene = new THREE.Scene();
+		var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setClearColor(0xffffff);
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		var sphere = new THREE.SphereGeometry(10, 40, 40);
+
+	  	var planetTexture = THREE.ImageUtils.loadTexture("Earth.png");
+        var specularTexture = THREE.ImageUtils.loadTexture("EarthSpec.png");
+        var normalTexture = THREE.ImageUtils.loadTexture("EarthNormal.png");
+
+
+        var planetMaterial = new THREE.MeshPhongMaterial();
+        planetMaterial.specularMap = specularTexture;
+        planetMaterial.specular = new THREE.Color(0x4444aa);
+
+
+        planetMaterial.normalMap = normalTexture;
+        planetMaterial.map = planetTexture;
+//               planetMaterial.shininess = 150;
+
+
+        // create a multimaterial
+        var mesh = THREE.SceneUtils.createMultiMaterialObject(sphere, [planetMaterial]);
+		scene.add(mesh);
+
+		// var light = new THREE.AmbientLight(0xaaaaaa);
+		// scene.add(light);
+
+		var slight = new THREE.SpotLight(0xcccccc);
+		slight.position.set(100, 50, 50);
+		scene.add(slight);
+
+		camera.position.z = 50;
+		mesh.rotation.z = -0.2;
+		document.body.appendChild(renderer.domElement);
+		function render(){
+			mesh.rotation.y += 0.01;
+			requestAnimationFrame(render);
+			renderer.render(scene, camera);
+		}
+		render();
+	</script>
+</body>
+</html>
