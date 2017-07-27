@@ -2,94 +2,38 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<link rel="icon" href="assets/f3d_logo.png">
+	<title>地月系展示Demo</title>
+	<style>
+		body{
+			margin: 0;
+		}
+		img{
+			position: fixed;
+			right: 0.5rem;
+			bottom: 0.5rem;
+		    width: 8rem;
+		}
+		canvas{
+			display: block;
+		}
+	</style>
 </head>
 <body>
-	<script src="three.min.js"></script>
-	<script src="controls/OrbitControls.js"></script>
+	<audio src="assets/horner.mp3" autoplay="true" loop="loop"></audio>
+	<img src="assets/f3dt_1.png" alt="">
 	<script>
-		var scene = new THREE.Scene();
-		var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-		camera.position.z = 250;
-		camera.rotation.z = 0.4;
-		var renderer = new THREE.WebGLRenderer();
-		// renderer.setClearColor(0x4444aa);
-		renderer.setSize(window.innerWidth, window.innerHeight);
-
-		var controls = new THREE.OrbitControls( camera, renderer.domElement );
-		controls.target.set( 0, 1, 0 );
-		// camera.position.set( 1, 1, 1 );
-		controls.update();
-
-
-
-		var earth = new THREE.SphereGeometry(37, 40, 40);
-
-	  	var planetTexture = THREE.ImageUtils.loadTexture("Earth.png");
-        var specularTexture = THREE.ImageUtils.loadTexture("EarthSpec.png");
-        var normalTexture = THREE.ImageUtils.loadTexture("EarthNormal.png");
-        // var cloudTexture = THREE.ImageUtils.loadTexture("earthcloudmaptrans.jpg");
-        var bumpTexture = THREE.ImageUtils.loadTexture("earthbump1k.jpg");
-        var planetMaterial = new THREE.MeshPhongMaterial();
-        // var planetMaterial2 = new THREE.MeshLambertMaterial({color: 0xffffff});
-        // planetMaterial2.bumpMap = cloudTexture;
-        // planetMaterial.alphaMap = cloudTexture;
-        planetMaterial.specularMap = specularTexture;
-        planetMaterial.specular = new THREE.Color(0x4444aa);
-        planetMaterial.normalMap = normalTexture;
-        planetMaterial.map = planetTexture;
-        planetMaterial.bumpMap = bumpTexture;
-		planetMaterial.shininess = 10;
-        // create a multimaterial
-        var earthMesh = THREE.SceneUtils.createMultiMaterialObject(earth, [planetMaterial]);
-		// earthMesh.rotation.z = -0.4;
-		scene.add(earthMesh);
-
-
-
-		var moon = new THREE.SphereGeometry(10, 40, 40);
-		var moonMaterial = new THREE.MeshPhongMaterial();
-		var moonTexture = THREE.ImageUtils.loadTexture("moonmap1k.jpg");
-		var moonBumpTexture = THREE.ImageUtils.loadTexture("moonbump1k.jpg");
-		moonMaterial.map = moonTexture;
-		moonMaterial.bumpMap = moonBumpTexture;
-		moonMaterial.bumpScale = 0.5;
-		var moonMesh = THREE.SceneUtils.createMultiMaterialObject(moon, [moonMaterial]);
-		scene.add(moonMesh);
-
-		moonMesh.position.set(180, 0, 0);
-
-		var light = new THREE.AmbientLight(0x555555);
-		scene.add(light);
-
-		var slight = new THREE.SpotLight(0xcccccc);
-		slight.position.set(100, 50, 150);
-		scene.add(slight);
-
-		document.body.appendChild(renderer.domElement);
-
-		var deg = 0;
-		function moonOrbit(){
-			var a = 130, b = 130;
-			deg += 0.01;
-			deg = deg % (2 * Math.PI);
-			var x = a * Math.cos(deg), y = b * Math.sin(deg);
-			return {x: x, z: y, y: 0};
-		}
-
-		function render(){
-			earthMesh.rotation.y += 0.005;
-
-			var pos = moonOrbit();
-			moonMesh.position.x = pos.x;
-			moonMesh.position.z = pos.z;
-			moonMesh.rotation.y += 0.02;
-
-			requestAnimationFrame(render);
-			renderer.render(scene, camera);
-			controls.update();
-		}
-		render();
+	var dis;
+	if(window.innerWidth > 1000){
+		dis = 500;
+	}else{
+		dis = 1000 + (window.innerWidth - 300) / 100 * 50;
+	}
 	</script>
+	<script src="libs/three.min.js"></script>
+	<script src="libs/controls/OrbitControls.js"></script>
+	<script src="src/constant_eval.js"></script>
+	<script src="src/index.js"></script>
 </body>
 </html>
