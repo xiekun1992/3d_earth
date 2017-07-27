@@ -21,9 +21,10 @@
 	</style>
 </head>
 <body>
-	<audio src="assets/horner.mp3" autoplay="true" loop="loop"></audio>
+	<audio src="assets/horner.mp3" preload="auto" loop="loop" id="bgMusic"></audio>
 	<img src="assets/f3dt_1.png" alt="">
 	<script>
+	document.getElementById("bgMusic").play();
 	var dis;
 	if(window.innerWidth > 1000){
 		dis = 500;
